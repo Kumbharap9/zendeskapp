@@ -6,4 +6,4 @@ metadata:
   labels: {}
 description: dev
 gke:
-  cluster: projects/affable-hydra-467019-a9/locations/asi-south1-c/clusters/zendesk-cluster
+  cluster: projects/affable-hydra-467019-a9/locations/asia-south1-c/clusters/zendesk-cluster
