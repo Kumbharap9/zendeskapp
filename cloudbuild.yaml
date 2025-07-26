@@ -1,0 +1,26 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image', './app' ]
+  id: 'Build Docker Image'
+
+  # images:
+  # - 'us-central1-docker.pkg.dev/affable-hydra-467019-a9/gke-repo/zendesk-image'
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'asia-south1-docker.pkg.dev/<your_project_id>/gke-repo/quickstart-image' ]
+  id: 'Push Docker Image'
+
+
+- name: 'google/cloud-sdk:latest'
+  entrypoint: 'sh'
+  args:
+  - -xe
+  - -c
+  - |
+    gcloud deploy apply --file deploy/pipeline.yaml --region=us-central1
+    gcloud deploy apply --file deploy/dev.yaml --region=us-central1
+    gcloud deploy releases create 'app-release-${SHORT_SHA}' --delivery-pipeline=gke-cicd-pipeline --region=us-central1 --skaffold-file=skaffold.yaml
+
+
+options:
+  logging: CLOUD_LOGGING_ONLY
