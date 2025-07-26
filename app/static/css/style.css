@@ -1,0 +1,426 @@
+/* static/css/style.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column; 
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 900px; /* Increased max-width */
+    margin-bottom: 30px; /* Space from bottom */
+    margin-top: 20px; /* Space from navbar */
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: bold;
+}
+
+input[type="text"],
+textarea,
+select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; 
+}
+
+input[type="text"]:focus,
+textarea:focus,
+select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+textarea {
+    resize: vertical; 
+}
+
+input[type="submit"],
+button[type="button"],
+.grammar-check-button { 
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px; 
+    transition: background-color 0.2s ease;
+}
+
+input[type="submit"]:hover,
+button[type="button"]:hover,
+.grammar-check-button:hover {
+    background-color: #0056b3;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.flash-messages {
+    margin-bottom: 20px;
+}
+
+.flash-message {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.flash-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.flash-message.danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.flash-message.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.modal-buttons {
+    text-align: right;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    margin-top: 15px;
+}
+
+.preview-field-label {
+    font-weight: bold;
+    color: #333;
+    display: inline-block;
+    width: 120px; 
+}
+
+.preview-field-value {
+    display: inline-block;
+    color: #666;
+    word-wrap: break-word; 
+    max-width: calc(100% - 130px); 
+    vertical-align: top; 
+}
+
+#previewBody {
+    white-space: pre-wrap; 
+    word-wrap: break-word;
+    background-color: #e9ecef;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 5px;
+    max-height: 300px; 
+    overflow-y: auto; 
+}
+
+.navbar {
+    width: 100%;
+    background-color: #333;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    box-sizing: border-box;
+}
+
+.navbar-left span {
+    font-size: 1.1em;
+}
+
+.navbar-right .logout-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.navbar-right .logout-btn:hover {
+    background-color: #0056b3;
+}
+
+.login-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f4; 
+    padding: 0; 
+}
+
+.login-container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px; 
+    text-align: center;
+}
+
+.login-container h1 {
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.login-container label {
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    width: calc(100% - 20px);
+    margin-bottom: 20px;
+}
+
+.login-container button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+}
+
+.login-container .flash-messages {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4); 
+    justify-content: center; 
+    align-items: center; 
+    padding: 20px; 
+    box-sizing: border-box; 
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto; 
+    padding: 30px;
+    border: 1px solid #888;
+    width: 80%; 
+    max-width: 700px; 
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    box-sizing: border-box;
+    max-height: 90vh; 
+    overflow-y: auto; 
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Grammar check specific styles */
+.grammar-check-results {
+    margin-top: 20px;
+}
+
+.grammar-match {
+    background-color: #ffe6e6; 
+    border: 1px solid #ffcccc;
+    border-left: 5px solid #ff0000; 
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size: 0.95em;
+}
+
+.grammar-match strong {
+    color: #cc0000;
+}
+
+.grammar-match-message {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.grammar-match-context {
+    font-style: italic;
+    color: #555;
+    margin-bottom: 5px;
+    background-color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px dashed #ccc;
+    font-family: monospace; 
+}
+
+.grammar-match-replacements span {
+    display: inline-block;
+    background-color: #e6ffe6; 
+    color: #1a7a3e; 
+    padding: 3px 8px;
+    margin-right: 5px;
+    margin-top: 5px;
+    border-radius: 3px;
+    border: 1px solid #b3ffb3;
+    cursor: pointer; 
+    transition: background-color 0.2s ease;
+}
+
+.grammar-match-replacements span:hover {
+    background-color: #ccffcc;
+}
+
+.grammar-match-replacements label {
+    display: inline; 
+    font-weight: normal; /* Override bold */
+    margin-bottom: 0;
+}
+
+.grammar-actions {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.apply-correction-btn {
+    background-color: #28a745; 
+    margin-right: 5px;
+    padding: 8px 12px;
+    font-size: 0.9em;
+}
+
+.apply-correction-btn:hover {
+    background-color: #218838;
+}
+
+.correct-all-btn {
+    background-color: #6c757d; 
+    padding: 8px 12px;
+    font-size: 0.9em;
+}
+
+.correct-all-btn:hover {
+    background-color: #5a6268;
+}
+
+.no-grammar-errors {
+    padding: 15px;
+    background-color: #e2f2e2;
+    color: #28a745;
+    border: 1px solid #c8e6c9;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+
+.grammar-button-container {
+    display: flex;
+    justify-content: flex-end; 
+    margin-top: -10px; 
+    margin-bottom: 15px;
+}
+
+.grammar-button-container .grammar-check-button {
+    margin-right: 0; 
+    padding: 6px 12px; 
+    font-size: 0.9em;
+}
+
+
+.autocomplete-container {
+    position: relative;
+    display: inline-block;
+    width: 100%; 
+    margin-bottom: 15px; 
+}
+
+.autocomplete-items {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 200px; 
+    overflow-y: auto;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 0 0 4px 4px; 
+}
+
+.autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff; 
+    border-bottom: 1px solid #d4d4d4;
+}
+
+.autocomplete-items div:hover {
+    background-color: #e9e9e9;
+}
+
+.autocomplete-active {
+    background-color: #007bff !important;
+    color: #ffffff;
+}
