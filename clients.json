@@ -1,0 +1,22 @@
+{
+  "Tata": {
+    "emails": ["tata.contact1@example.com", "tata.support@example.com", "tata.lead.b@example.com","abhishekkumbhar48@gmail.com"],
+    "domains": ["tata.com", "sub.tata.com", "tata.org", "tata.in"]
+  },
+  "BMW": {
+    "emails": ["bmw.contact@example.com", "bmw.lead.b@example.com", "bmw.support@example.com"],
+    "domains": ["bmw.org", "bmw.domainBMW.org", "bmw.com", "bmw.net"]
+  },
+  "Audi": {
+    "emails": ["audi.support@example.com", "audi.lead.b@example.com", "audi.tech@example.com"],
+    "domains": ["audi.net", "audi.domainB.org", "audi.com"]
+  },
+  "Jaquar": {
+    "emails": ["Jaquar.support@example.com", "jaquar.lead.b@example.com"],
+    "domains": ["Jaquar.net", "jaquar.com"]
+  },
+  "RR": {
+    "emails": ["rr.support@example.com", "rr.lead.b@example.com"],
+    "domains": ["rr.net", "rr.com"]
+  }
+}
