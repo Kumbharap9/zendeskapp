@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
       - name: zendesk-ticket-app
-        image: asia-south1-docker.pkg.dev/nviz-playground/zendesk/zendesk@sha256:c9651d9548948db6c997f16b87411165f1798f41f2289ecba26292ae51260f34
+        image: asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image
         ports:
         - containerPort: 5000
         envFrom:
