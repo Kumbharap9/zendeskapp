@@ -3,11 +3,9 @@ steps:
   args: ['build', '-t', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image', './app' ]
   id: 'Build Docker Image'
 
-  # images:
-  # - 'us-central1-docker.pkg.dev/affable-hydra-467019-a9/gke-repo/zendesk-image'
-
+  
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'asia-south1-docker.pkg.dev/<your_project_id>/gke-repo/quickstart-image' ]
+  args: ['push', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image' ]
   id: 'Push Docker Image'
 
 
