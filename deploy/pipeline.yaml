@@ -1,0 +1,18 @@
+apiVersion: deploy.cloud.google.com/v1
+kind: DeliveryPipeline
+metadata:
+  name: zendesk-cicd-pipeline
+  labels:
+    app: cicd
+description: zendesk delivery pipeline
+serialPipeline:
+  stages:
+  - targetId: dev
+    # profiles:
+    # - dev
+  # - targetId: staging
+  #   profiles:
+  #   - staging
+  - targetId: prod
+  #   profiles:
+  #   - prod
