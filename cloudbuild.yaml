@@ -7,28 +7,17 @@ steps:
     args: ['push', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image']
     id: 'Push Docker Image'
 
-  - name: 'google/cloud-sdk:latest'
-    entrypoint: 'sh'
+  - name: 'gcr.io/cloud-builders/kubectl'
+    id: 'Deploy to GKE'
     args:
-      - -xe
-      - -c
-      - |
-        gcloud deploy apply \
-          --file deploy/pipeline.yaml \
-          --region=asia-south1 \
-          --project=affable-hydra-467019-a9
-
-        gcloud deploy apply \
-          --file deploy/dev.yaml \
-          --region=asia-south1 \
-          --project=affable-hydra-467019-a9
-
-        gcloud deploy releases create app-release-${SHORT_SHA} \
-          --delivery-pipeline=zendesk-cicd-pipeline \
-          --region=asia-south1 \
-          --project=affable-hydra-467019-a9 \
-          --skaffold-file=skaffold.yaml \
-          --to-target=dev
+      - 'apply'
+      - '-f'
+      - 'kubernetes/' # Assumes your Kubernetes manifest files are in a 'kubernetes/' directory
+    env:
+    
+      - 'CLOUDSDK_COMPUTE_ZONE=asia-south1-c'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=zendesk-cluster'
+      - 'PROJECT_ID=affable-hydra-467019-a9'
 
 options:
   logging: CLOUD_LOGGING_ONLY
