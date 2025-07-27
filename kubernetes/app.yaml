@@ -12,8 +12,6 @@ data:
   ZENDESK_API_TOKEN: aUxvYlI3RW13UTl1WmJpS0VXbHpTS05CbURXOVp3aUFBTjRwVmlHVw==
   FLASK_SECRET_KEY: MGE3YTI5NDcwMDVhNzVkMTlkNjllMTliMzRmZjhmMjk1MDJjODE5MjMzM2U2MTc=
 
-
-
 ---
 
 apiVersion: apps/v1
@@ -34,7 +32,7 @@ spec:
     spec:
       containers:
       - name: zendesk-ticket-app
-        image: asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image
+        image: asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:latest
         ports:
         - containerPort: 5000
         envFrom:
@@ -69,9 +67,7 @@ spec:
         value: "zendesk"
         effect: "NoSchedule"
 
-
 ---
-
 
 apiVersion: v1
 kind: Service
@@ -81,9 +77,9 @@ metadata:
     app: zendesk-ticket-app
 spec:
   selector:
-    app: zendesk-ticket-app # Selects pods with this label
+    app: zendesk-ticket-app
   ports:
     - protocol: TCP
-      port: 80 # The port the service will expose
-      targetPort: 5000 # The port on the container
-  type: LoadBalancer # Exposes the service externally using a cloud provider's load balancer
+      port: 80
+      targetPort: 5000
+  type: LoadBalancer
