@@ -7,9 +7,9 @@ data:
   # Base64 encoded values for sensitive environment variables
   # You must replace these with your actual base64 encoded values.
   # Example: echo -n "your_value" | base64
-  ZENDESK_SUBDOMAIN: YWJoaXNoZWstNTY1MzY=
+  ZENDESK_SUBDOMAIN: c2VsZi0yMjA3OQ==
   ZENDESK_EMAIL: a3VtYmhhcmFwOUBnbWFpbC5jb20=
-  ZENDESK_API_TOKEN: aUxvYlI3RW13UTl1WmJpS0VXbHpTS05CbURXOVp3aUFBTjRwVmlHVw==
+  ZENDESK_API_TOKEN: WVI0akM5NXBrakU4dG1pdWRXZXREaU0yY3FpT1FRcmZFdjVqRkIxNg==
   FLASK_SECRET_KEY: MGE3YTI5NDcwMDVhNzVkMTlkNjllMTliMzRmZjhmMjk1MDJjODE5MjMzM2U2MTc=
   HARDCODED_REQUESTER_EMAIL : a3VtYmhhcmFwOUBnbWFpbC5jb20=
   HARDCODED_ASSIGNEE_EMAIL : a3VtYmhhcmFwOUBnbWFpbC5jb20=
