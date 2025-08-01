@@ -1,24 +1,31 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'build'
-      - '-t'
-      - 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:${_SHORT_SHA}'
-      - '.'
     id: 'Build Docker Image'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      # We use a bash command to ensure the _SHORT_SHA variable is correctly
+      # substituted into the image tag. This is more reliable than direct
+      # YAML substitution in some cases.
+      - >
+        docker build -t asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:${_SHORT_SHA} .
 
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
+      # Push the newly tagged image to the registry
       - 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:${_SHORT_SHA}'
     id: 'Push Docker Image'
 
-  
+  # This step uses sed to replace a placeholder in your Kubernetes manifest
+  # with the new, unique image tag. This is necessary to trigger a new deployment.
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'Update K8s Manifest'
     entrypoint: 'bash'
     args:
       - '-c'
+      # The sed command finds and replaces the placeholder 'zendesk-image:_IMAGE_TAG_'
+      # with the image name and the short SHA.
       - "sed -i 's|zendesk-image:_IMAGE_TAG_|zendesk-image:${_SHORT_SHA}|' kubernetes/deployment.yaml"
 
   - name: 'gcr.io/cloud-builders/kubectl'
@@ -35,5 +42,6 @@ steps:
 options:
   logging: CLOUD_LOGGING_ONLY
 
+# Define the substitution variable for the image tag placeholder
 substitutions:
-  _IMAGE_TAG_: 'latest' # This is a fallback value, the sed command will replace it.
+  _IMAGE_TAG_: 'latest' # This is a fallback value for the sed command
