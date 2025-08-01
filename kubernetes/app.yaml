@@ -11,8 +11,8 @@ data:
   ZENDESK_EMAIL: bml0cm9nZW5hZ2VudHNAbnZpei5jb20=
   ZENDESK_API_TOKEN: ZDNoTTg3RUd0ZTlkT0xPNGJxaW8wVFZTcThDcktGWk1qbDMwZjgyMA==
   FLASK_SECRET_KEY: MGE3YTI5NDcwMDVhNzVkMTlkNjllMTliMzRmZjhmMjk1MDJjODE5MjMzM2U2MTc=
-  ZENDESK_REQUESTER_EMAIL: bml0cm9nZW5hZ2VudHNAbnZpei5jb20=
-  ZENDESK_ASSIGNEE_EMAIL: bml0cm9nZW5hZ2VudHNAbnZpei5jb20=
+  ZENDESK_REQUESTER_EMAIL : bml0cm9nZW5hZ2VudHNAbnZpei5jb20=
+  ZENDESK_ASSIGNEE_EMAIL : bml0cm9nZW5hZ2VudHNAbnZpei5jb20=
 
 ---
 
@@ -34,8 +34,7 @@ spec:
     spec:
       containers:
       - name: zendesk-ticket-app
-        # Use a unique placeholder that will be replaced by Cloud Build's `sed` command.
-        image: asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:COMMIT_SHA_PLACEHOLDER
+        image: asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:latest
         ports:
         - containerPort: 5000
         envFrom:
