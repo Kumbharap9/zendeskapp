@@ -1,4 +1,3 @@
-# A Kubernetes Secret to store sensitive environment variables
 apiVersion: v1
 kind: Secret
 metadata:
@@ -6,17 +5,17 @@ metadata:
 type: Opaque
 data:
   # Base64 encoded values for sensitive environment variables
+  # You must replace these with your actual base64 encoded values.
   # Example: echo -n "your_value" | base64
   ZENDESK_SUBDOMAIN: bnZpeg==
   ZENDESK_EMAIL: bml0cm9nZW5hZ2VudHNAbnZpei5jb20=
   ZENDESK_API_TOKEN: ZDNoTTg3RUd0ZTlkT0xPNGJxaW8wVFZTcThDcktGWk1qbDMwZjgyMA==
   FLASK_SECRET_KEY: MGE3YTI5NDcwMDVhNzVkMTlkNjllMTliMzRmZjhmMjk1MDJjODE5MjMzM2U2MTc=
-  ZENDESK_REQUESTER_EMAIL : bml0cm9nZW5lYWdlbnRzQG52aXouY29t=
-  ZENDESK_ASSIGNEE_EMAIL : bml0cm9nZW5lYWdlbnRzQG52aXouY29t=
+  ZENDESK_REQUESTER_EMAIL : bml0cm9nZW5hZ2VudHNAbnZpei5jb20=
+  ZENDESK_ASSIGNEE_EMAIL : bml0cm9nZW5hZ2VudHNAbnZpei5jb20=
 
 ---
 
-# A Kubernetes Deployment to manage the application's pods
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -35,8 +34,6 @@ spec:
     spec:
       containers:
       - name: zendesk-ticket-app
-        # Use a placeholder for the image tag. The Cloud Build process will
-        # replace this with the unique commit SHA.
         image: asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:latest
         ports:
         - containerPort: 5000
@@ -74,7 +71,6 @@ spec:
 
 ---
 
-# A Kubernetes Service to expose the application to the internet
 apiVersion: v1
 kind: Service
 metadata:
