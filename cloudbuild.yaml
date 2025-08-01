@@ -9,8 +9,8 @@ steps:
     args: ['push', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:${COMMIT_SHA}']
     id: 'Push Docker Image'
 
-  # Use `kubectl set image` to directly update the deployment with the new image.
-  # This command does not require a local copy of the manifest file.
+  # The deploy step now first applies the manifest to create/update
+  # all resources, then explicitly sets the image to ensure a new rollout.
   - name: 'gcr.io/cloud-builders/kubectl'
     id: 'Deploy to GKE'
     entrypoint: bash
@@ -18,6 +18,9 @@ steps:
       - '-c'
       - |
         gcloud container clusters get-credentials zendesk-cluster --zone=asia-south1-c --project=affable-hydra-467019-a9
+        # First, apply the manifest to ensure the deployment and other resources exist
+        kubectl apply -f kubernetes/
+        # Then, use `set image` to force a rolling update with the new image tag
         kubectl set image deployment/zendesk-ticket-app-deployment zendesk-ticket-app=asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:${COMMIT_SHA}
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=asia-south1-c'
@@ -26,3 +29,4 @@ steps:
 
 options:
   logging: CLOUD_LOGGING_ONLY
+
