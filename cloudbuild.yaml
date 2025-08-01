@@ -4,11 +4,9 @@ steps:
     entrypoint: 'bash'
     args:
       - '-c'
-      # We use a bash command to ensure the _SHORT_SHA variable is correctly
-      # substituted into the image tag. This is more reliable than direct
-      # YAML substitution in some cases.
-      - >
-        docker build -t asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:${_SHORT_SHA} .
+      # This syntax is more robust for ensuring the _SHORT_SHA variable is
+      # correctly substituted into the Docker tag.
+      - 'docker build -t asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:${_SHORT_SHA} .'
 
   - name: 'gcr.io/cloud-builders/docker'
     args:
