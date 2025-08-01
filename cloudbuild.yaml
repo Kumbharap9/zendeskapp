@@ -4,14 +4,15 @@ steps:
     entrypoint: 'bash'
     args:
       - '-c'
-      # This syntax is more robust for ensuring the _SHORT_SHA variable is
-      # correctly substituted into the Docker tag.
-      - 'docker build -t asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:${_SHORT_SHA} .'
+      # The image tag is now enclosed in quotes to ensure the shell correctly
+      # handles the substitution of the _SHORT_SHA variable.
+      - 'docker build -t "asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:${_SHORT_SHA}" .'
 
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
-      # Push the newly tagged image to the registry
+      # Push the newly tagged image to the registry. The quotes aren't
+      # strictly necessary here, but it's good practice for consistency.
       - 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:${_SHORT_SHA}'
     id: 'Push Docker Image'
 
