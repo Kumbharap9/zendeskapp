@@ -1,20 +1,26 @@
 steps:
+  # Build the Docker image with a unique tag based on the commit SHA
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:latest', '.']
+    args: ['build', '-t', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:${COMMIT_SHA}', '.']
     id: 'Build Docker Image'
 
+  # Push the uniquely tagged image to the registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:latest']
+    args: ['push', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:${COMMIT_SHA}']
     id: 'Push Docker Image'
 
-  - name: 'gcr.io/cloud-builders/kubectl'
+  # Use `sed` to dynamically replace the image tag in the manifest file with the commit SHA
+  # and then apply the updated manifest to the GKE cluster.
+  - name: 'gcr.io/cloud-builders/gcloud'
     id: 'Deploy to GKE'
+    entrypoint: bash
     args:
-      - 'apply'
-      - '-f'
-      - 'kubernetes/'
+      - '-c'
+      - |
+        gcloud container clusters get-credentials zendesk-cluster --zone=asia-south1-c --project=affable-hydra-467019-a9
+        sed -i 's|zendesk-image:COMMIT_SHA_PLACEHOLDER|zendesk-image:'$COMMIT_SHA'|g' kubernetes/zendesk-app-deployment.yaml
+        kubectl apply -f kubernetes/
     env:
-    
       - 'CLOUDSDK_COMPUTE_ZONE=asia-south1-c'
       - 'CLOUDSDK_CONTAINER_CLUSTER=zendesk-cluster'
       - 'PROJECT_ID=affable-hydra-467019-a9'
