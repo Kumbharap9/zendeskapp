@@ -1,46 +1,23 @@
 steps:
-  - name: 'gcr.io/cloud-builders/docker'
-    id: 'Build Docker Image'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      # The image tag is now enclosed in quotes to ensure the shell correctly
-      # handles the substitution of the _SHORT_SHA variable.
-      - 'docker build -t "asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:${_SHORT_SHA}" .'
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:latest', '.']
+    id: 'Build Docker Image'
 
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'push'
-      # Push the newly tagged image to the registry. The quotes aren't
-      # strictly necessary here, but it's good practice for consistency.
-      - 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:${_SHORT_SHA}'
-    id: 'Push Docker Image'
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:latest']
+    id: 'Push Docker Image'
 
-  # This step uses sed to replace a placeholder in your Kubernetes manifest
-  # with the new, unique image tag. This is necessary to trigger a new deployment.
-  - name: 'gcr.io/cloud-builders/gcloud'
-    id: 'Update K8s Manifest'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      # The sed command finds and replaces the placeholder 'zendesk-image:_IMAGE_TAG_'
-      # with the image name and the short SHA.
-      - "sed -i 's|zendesk-image:_IMAGE_TAG_|zendesk-image:${_SHORT_SHA}|' kubernetes/deployment.yaml"
+  - name: 'gcr.io/cloud-builders/kubectl'
+    id: 'Deploy to GKE'
+    args:
+      - 'apply'
+      - '-f'
+      - 'kubernetes/' # Assumes your Kubernetes manifest files are in a 'kubernetes/' directory
 
-  - name: 'gcr.io/cloud-builders/kubectl'
-    id: 'Deploy to GKE'
-    args:
-      - 'apply'
-      - '-f'
-      - 'kubernetes/'
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=asia-south1-c'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=zendesk-cluster'
-      - 'PROJECT_ID=affable-hydra-467019-a9'
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=asia-south1-c'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=zendesk-cluster'
+      - 'PROJECT_ID=affable-hydra-467019-a9'
 
 options:
-  logging: CLOUD_LOGGING_ONLY
-
-# Define the substitution variable for the image tag placeholder
-substitutions:
-  _IMAGE_TAG_: 'latest' # This is a fallback value for the sed command
+  logging: CLOUD_LOGGING_ONLY
