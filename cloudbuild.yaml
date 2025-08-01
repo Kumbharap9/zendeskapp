@@ -1,23 +1,23 @@
 steps:
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:latest', '.']
-    id: 'Build Docker Image'
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:latest', '.']
+    id: 'Build Docker Image'
 
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:latest']
-    id: 'Push Docker Image'
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:latest']
+    id: 'Push Docker Image'
 
-  - name: 'gcr.io/cloud-builders/kubectl'
-    id: 'Deploy to GKE'
-    args:
-      - 'apply'
-      - '-f'
-      - 'kubernetes/' # Assumes your Kubernetes manifest files are in a 'kubernetes/' directory
-
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=asia-south1-c'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=zendesk-cluster'
-      - 'PROJECT_ID=affable-hydra-467019-a9'
+  - name: 'gcr.io/cloud-builders/kubectl'
+    id: 'Deploy to GKE'
+    args:
+      - 'apply'
+      - '-f'
+      - 'kubernetes/'
+    env:
+    
+      - 'CLOUDSDK_COMPUTE_ZONE=asia-south1-c'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=zendesk-cluster'
+      - 'PROJECT_ID=affable-hydra-467019-a9'
 
 options:
-  logging: CLOUD_LOGGING_ONLY
+  logging: CLOUD_LOGGING_ONLY
