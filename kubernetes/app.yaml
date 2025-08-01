@@ -37,7 +37,7 @@ spec:
       - name: zendesk-ticket-app
         # Use a placeholder for the image tag. The Cloud Build process will
         # replace this with the unique commit SHA.
-        image: asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:_IMAGE_TAG_
+        image: asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:latest
         ports:
         - containerPort: 5000
         envFrom:
