@@ -1,6 +1,6 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image', './app']
+    args: ['build', '-t', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image', '.']
     id: 'Build Docker Image'
 
   - name: 'gcr.io/cloud-builders/docker'
