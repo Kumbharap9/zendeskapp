@@ -8,7 +8,7 @@
     "emails": ["tata22.contact1@example.com", "tata22.support@example.com", "tata22.lead.b@example.com","abhishekkumbhar48@gmail.com"],
     "domains": ["tata22.com", "sub.tata22.com", "tat22a.org", "tata22.in"]
   },
-  "BMW": {
+  "BMWtest": {
     "emails": ["bmw.contact@example.com", "bmw.lead.b@example.com", "bmw.support@example.com"],
     "domains": ["bmw.org", "bmw.domainBMW.org", "bmw.com", "bmw.net"]
   },
