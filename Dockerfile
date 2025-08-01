@@ -25,7 +25,7 @@ RUN for i in $(seq 1 5); do \
     done
 
 
-COPY . .
+COPY . /app
 
 EXPOSE 5000
 
