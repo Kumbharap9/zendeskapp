@@ -1,23 +1,39 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image', '.']
+    args:
+      - 'build'
+      - '-t'
+      - 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:${_SHORT_SHA}'
+      - '.'
     id: 'Build Docker Image'
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image']
+    args:
+      - 'push'
+      - 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:${_SHORT_SHA}'
     id: 'Push Docker Image'
+
+  
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'Update K8s Manifest'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - "sed -i 's|zendesk-image:_IMAGE_TAG_|zendesk-image:${_SHORT_SHA}|' kubernetes/deployment.yaml"
 
   - name: 'gcr.io/cloud-builders/kubectl'
     id: 'Deploy to GKE'
     args:
       - 'apply'
       - '-f'
-      - 'kubernetes/' # Assumes your Kubernetes manifest files are in a 'kubernetes/' directory
+      - 'kubernetes/'
     env:
-    
       - 'CLOUDSDK_COMPUTE_ZONE=asia-south1-c'
       - 'CLOUDSDK_CONTAINER_CLUSTER=zendesk-cluster'
       - 'PROJECT_ID=affable-hydra-467019-a9'
 
 options:
   logging: CLOUD_LOGGING_ONLY
+
+substitutions:
+  _IMAGE_TAG_: 'latest' # This is a fallback value, the sed command will replace it.
