@@ -1,23 +1,56 @@
 steps:
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:latest', '.']
-    id: 'Build Docker Image'
+  - name: 'gcr.io/cloud-builders/git'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "COMMIT_SHA=$(git rev-parse --short HEAD)" > /workspace/commit.env
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        source /workspace/commit.env
+        echo "Using image tag: $COMMIT_SHA"
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'asia-south1-docker.pkg.dev/affable-hydra-467019-a9/zendesk/zendesk-image:latest']
+    id: 'Build Docker Image'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        source /workspace/commit.env
+        docker build -t asia-south1-docker.pkg.dev/beaming-inn-479504-a0/zendesk/zendesk-image:$COMMIT_SHA .
+
+  - name: 'gcr.io/cloud-builders/docker'
     id: 'Push Docker Image'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        source /workspace/commit.env
+        docker push asia-south1-docker.pkg.dev/beaming-inn-479504-a0/zendesk/zendesk-image:$COMMIT_SHA
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'Patch Deployment YAML'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        source /workspace/commit.env
+        sed "s|IMAGE_PLACEHOLDER|asia-south1-docker.pkg.dev/beaming-inn-479504-a0/zendesk/zendesk-image:${COMMIT_SHA}|" kubernetes/app.yaml > kubernetes/deploy-final.yaml
 
   - name: 'gcr.io/cloud-builders/kubectl'
     id: 'Deploy to GKE'
     args:
       - 'apply'
       - '-f'
-      - 'kubernetes/' # Assumes your Kubernetes manifest files are in a 'kubernetes/' directory
+      - 'kubernetes/deploy-final.yaml'
     env:
-    
       - 'CLOUDSDK_COMPUTE_ZONE=asia-south1-c'
       - 'CLOUDSDK_CONTAINER_CLUSTER=zendesk-cluster'
-      - 'PROJECT_ID=affable-hydra-467019-a9'
+      - 'PROJECT_ID=beaming-inn-479504-a0'
 
 options:
   logging: CLOUD_LOGGING_ONLY
