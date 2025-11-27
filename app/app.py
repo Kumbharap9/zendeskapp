@@ -34,7 +34,7 @@ def load_clients_data():
 CLIENTS_DATA = load_clients_data()
 
 
-tool = language_tool_python.LanguageTool('en-US', version='5.8')
+tool = language_tool_python.LanguageTool('en-US')
 
 login_manager = LoginManager()
 login_manager.init_app(app)
