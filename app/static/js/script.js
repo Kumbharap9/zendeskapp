@@ -24,15 +24,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const previewBody = document.getElementById('previewBody');
     const confirmSubmitBtn = document.getElementById('confirmSubmitBtn');
     const editTicketBtn = document.getElementById('editTicketBtn');
-    const modalFlashMessageContainer = document.getElementById('modalFlashMessageContainer'); // For messages within the modal
+    const modalFlashMessageContainer = document.getElementById('modalFlashMessageContainer'); 
 
-    // NEW: Elements for grammar/spelling check
+
     const checkGrammarSpellingBtn = document.getElementById('checkGrammarSpellingBtn');
     const grammarSpellingMessage = document.getElementById('grammarSpellingMessage');
 
     let issueCount = 0;
     let currentFormData = null;
-    let ALL_CLIENTS_DATA = {}; // Will store all client data (names, emails, domains)
+    let ALL_CLIENTS_DATA = {}; 
+    
+    const defaultCcEmail = 'nitrogensupport@nviz.com';
+    if (ccEmailsInput) {
+        let currentEmails = ccEmailsInput.value.split(',').map(email => email.trim()).filter(email => email !== '');
+        if (!currentEmails.includes(defaultCcEmail)) {
+            currentEmails.push(defaultCcEmail);
+        }
+        ccEmailsInput.value = currentEmails.join(', ');
+    }
 
     function setRequired(element, isRequired) {
         if (element) {
@@ -44,18 +53,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Function to display messages within the modal or custom template section
-    function showMessage(container, message, type) {
+     function showMessage(container, message, type) {
         container.innerHTML = `<div class="flash-message-modal ${type}">${message}</div>`;
-        container.style.display = 'block'; // Ensure the container is visible
+        container.style.display = 'block'; 
     }
 
     function clearMessage(container) {
         container.innerHTML = '';
-        container.style.display = 'none'; // Hide the container when empty
+        container.style.display = 'none';
     }
 
-    // Helper for modal messages
     function showModalMessage(message, type) {
         showMessage(modalFlashMessageContainer, message, type);
     }
@@ -64,7 +71,6 @@ document.addEventListener('DOMContentLoaded', function() {
         clearMessage(modalFlashMessageContainer);
     }
 
-    // Helper for grammar/spelling messages
     function showGrammarSpellingMessage(message, type) {
         showMessage(grammarSpellingMessage, message, type);
     }
@@ -88,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Check if "Yes" is explicitly selected for specifying codes for 4xx/5xx types
         const specifyCodes = is4xx5xx && specifyCodesYesRadio && specifyCodesYesRadio.checked; 
 
-        dynamicUrlsContainer.innerHTML = ''; // Clear previous fields
+        dynamicUrlsContainer.innerHTML = ''; 
 
         if (is4xx5xx) {
             issueSection.querySelector('.specify-codes-group').style.display = 'block';
@@ -97,10 +103,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (specifyCodesNoRadio) specifyCodesNoRadio.checked = true;
         }
 
-        if (is4xx5xx && specifyCodes) { // If it's 4xx/5xx AND user wants to specify codes
+        if (is4xx5xx && specifyCodes) { 
             groupUrlsRadioGroup.style.display = 'block';
             const groupUrlsYesRadio = issueSection.querySelector('.group-urls-radio[value="yes"]');
-            const groupUrls = groupUrlsYesRadio ? groupUrlsYesRadio.checked : true; // Default to grouped if not set
+            const groupUrls = groupUrlsYesRadio ? groupUrlsYesRadio.checked : true; 
 
             const statusCodes = statusCodesInput.value.split(',').map(s => s.trim()).filter(s => s.length > 0);
 
@@ -135,8 +141,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     dynamicUrlsContainer.appendChild(p);
                 }
             }
-        } else { // Not 4xx/5xx, OR 4xx/5xx but "No" is chosen for specifying codes
-            groupUrlsRadioGroup.style.display = 'none'; // Always hide the "Group Sample URLs" radio for these types
+        } else { 
+            groupUrlsRadioGroup.style.display = 'none'; 
             
             const label = document.createElement('label');
             label.textContent = 'Sample URLs (one per line):';
@@ -172,31 +178,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if(ipAddressField) ipAddressField.style.display = 'none';
         setRequired(ipAddressInput, false);
-        setRequired(statusCodesInput, false); // Make status codes not required by default
+        setRequired(statusCodesInput, false); 
 
         specifyCodesGroup.style.display = 'none';
         setRequired(specifyCodesYesRadio, false);
         setRequired(specifyCodesNoRadio, false);
-        if(specifyCodesNoRadio) specifyCodesNoRadio.checked = true; // Default to "No"
+        if(specifyCodesNoRadio) specifyCodesNoRadio.checked = true; 
 
         if(groupUrlsRadioGroup) groupUrlsRadioGroup.style.display = 'none';
 
         if (selectedIssueType === "Suspicious IP Block") {
             if(ipAddressField) ipAddressField.style.display = 'block';
             setRequired(ipAddressInput, true);
-            setRequired(statusCodesInput, true); // Status codes are required for intro text
+            setRequired(statusCodesInput, true); 
         } else if (selectedIssueType === "Suspicious Traffic") {
-            if(ipAddressField) ipAddressField.style.display = 'block'; // Optional IP for Suspicious Traffic
+            if(ipAddressField) ipAddressField.style.display = 'block'; 
             setRequired(ipAddressInput, false); 
             setRequired(statusCodesInput, true);
         } else if (selectedIssueType === "4xx Errors" || selectedIssueType === "5xx Errors") {
             if(ipAddressField) ipAddressField.style.display = 'none'; 
             setRequired(ipAddressInput, false); 
             setRequired(statusCodesInput, true);
-            specifyCodesGroup.style.display = 'block'; // Show the new radio group for 4xx/5xx
-            setRequired(specifyCodesYesRadio, true); // Make sure one is selected
+            specifyCodesGroup.style.display = 'block'; 
+            setRequired(specifyCodesYesRadio, true); 
             setRequired(specifyCodesNoRadio, true);
-            // The groupUrlsRadioGroup visibility will be handled by updateSampleUrlsDisplay
+            
         }
         
         updateSampleUrlsDisplay(issueSection);
@@ -213,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         issueSection.querySelectorAll('.specify-codes-radio').forEach(radio => {
             radio.addEventListener('change', function() {
-                updateSampleUrlsDisplay(issueSection); // This will toggle the visibility of the group_urls_radio_group and recreate URL fields
+                updateSampleUrlsDisplay(issueSection); 
             });
         });
         
@@ -253,10 +259,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     section.querySelectorAll('.specify-codes-radio').forEach(radio => {
                         radio.name = `specify_codes_${index}`;
                     });
-                    updateSampleUrlsDisplay(section); // Re-trigger URL display update
+                    updateSampleUrlsDisplay(section); 
                 });
             } else {
-                // Changed alert to use custom message display
+                
                 showGrammarSpellingMessage("You must have at least one issue defined.", 'danger');
                 setTimeout(() => clearGrammarSpellingMessage(), 3000);
             }
@@ -280,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function() {
         issueSection.querySelectorAll('.group-urls-radio').forEach(radio => {
             radio.name = `group_urls_${issueCount}`;
             if (radio.value === 'yes') { 
-                radio.checked = true; // Default to grouped Yes
+                radio.checked = true;
             } else {
                 radio.checked = false;
             }
@@ -288,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         issueSection.querySelectorAll('.specify-codes-radio').forEach(radio => {
             radio.name = `specify_codes_${issueCount}`;
-            if (radio.value === 'no') { // Default to "No" for specifying codes
+            if (radio.value === 'no') { 
                 radio.checked = true;
             } else {
                 radio.checked = false;
@@ -300,9 +306,9 @@ document.addEventListener('DOMContentLoaded', function() {
         predefinedTemplateFieldsContainer.appendChild(issueSection);
         addEventListenersToIssueSection(issueSection);
 
-        // Populate host select based on the currently selected client
+        
         const currentHostSelect = issueSection.querySelector('.host-select');
-        const selectedClient = clientNameHidden.value; // Use the value from the hidden input
+        const selectedClient = clientNameHidden.value; 
         if (selectedClient && ALL_CLIENTS_DATA[selectedClient]) {
             const clientInfo = ALL_CLIENTS_DATA[selectedClient];
             currentHostSelect.innerHTML = '<option value="">-- Select Host --</option>';
@@ -324,7 +330,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         issueSection.querySelector('.issue-type-select').value = '';
-        updateIssueRequirements(issueSection); // Apply initial requirements and display logic
+        updateIssueRequirements(issueSection); 
         issueCount++;
 
         document.querySelectorAll('.issue-section .remove-issue-btn').forEach(btn => btn.style.display = 'inline-block');
@@ -347,7 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
             addAnotherIssueBtn.style.display = 'block';
             customTemplateField.style.display = 'none';
             
-            if (issueCount === 0) { // Only add initial if no issues are currently present
+            if (issueCount === 0) { 
                 addInitialIssueSection();
             } else {
                 document.querySelectorAll('.issue-section').forEach(issueSection => {
@@ -363,7 +369,7 @@ document.addEventListener('DOMContentLoaded', function() {
             addAnotherIssueBtn.style.display = 'none';
             customTemplateField.style.display = 'block';
 
-            // Clear any previous grammar/spelling messages when switching to custom template
+            
             clearGrammarSpellingMessage(); 
             
             document.querySelectorAll('.issue-section').forEach(issueSection => {
@@ -380,9 +386,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // NEW: Function to load client-specific data (emails and domains for host selects)
+
     function loadClientSpecificData(selectedClientName) {
-        ccEmailsInput.value = '';
+        
+        let currentManualEmails = ccEmailsInput.value.split(',')
+                                                    .map(email => email.trim())
+                                                    .filter(email => email !== '' && email !== defaultCcEmail);
+        
+        
+        ccEmailsInput.value = ''; 
+
         document.querySelectorAll('.host-select').forEach(select => {
             select.innerHTML = '<option value="">-- Select Host --</option>';
             setRequired(select, false);
@@ -390,11 +403,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (selectedClientName && ALL_CLIENTS_DATA[selectedClientName]) {
             const clientInfo = ALL_CLIENTS_DATA[selectedClientName];
+            let combinedEmails = new Set();
+
+            combinedEmails.add(defaultCcEmail); 
+
             if (clientInfo.emails && clientInfo.emails.length > 0) {
-                ccEmailsInput.value = clientInfo.emails.join(', ');
-            } else {
-                ccEmailsInput.value = '';
+                clientInfo.emails.forEach(email => combinedEmails.add(email)); 
             }
+            
+           
+            currentManualEmails.forEach(email => {
+                if (!combinedEmails.has(email)) {
+                    combinedEmails.add(email);
+                }
+            });
+
+            ccEmailsInput.value = Array.from(combinedEmails).join(', ');
+            
             
             document.querySelectorAll('.host-select').forEach(currentHostSelect => {
                 currentHostSelect.innerHTML = '<option value="">-- Select Host --</option>';
@@ -414,9 +439,10 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             templateSelectionGroup.style.display = 'block';
-            updateTemplateDisplay(); // Re-evaluate template display after client data loads
+            updateTemplateDisplay(); 
         } else {
-            ccEmailsInput.value = '';
+            
+            ccEmailsInput.value = defaultCcEmail; 
             document.querySelectorAll('.host-select').forEach(select => {
                 setRequired(select, false);
             });
@@ -427,11 +453,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // NEW: Autocomplete logic
+   
     let currentFocus;
 
     function closeAllLists(elmnt) {
-        // Clear the content of the clientSuggestionsContainer directly
+       
         clientSuggestionsContainer.innerHTML = '';
         currentFocus = -1; // Reset focus when closing
     }
@@ -442,7 +468,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentFocus >= x.length) currentFocus = 0;
         if (currentFocus < 0) currentFocus = (x.length - 1);
         x[currentFocus].classList.add("autocomplete-active");
-        // Scroll the active item into view
+        
         x[currentFocus].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
@@ -454,11 +480,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     clientSearchInput.addEventListener("input", function(e) {
         let val = this.value;
-        closeAllLists(); // Clear previous suggestions
+        closeAllLists(); 
 
         if (!val) { 
             clientNameHidden.value = ''; 
-            loadClientSpecificData(''); 
+            loadClientSpecificData('');
             return false;
         }
         currentFocus = -1;
@@ -473,8 +499,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const startIndex = clientName.toUpperCase().indexOf(val.toUpperCase());
                 const endIndex = startIndex + val.length;
                 b.innerHTML = clientName.substring(0, startIndex) +
-                              "<strong>" + clientName.substring(startIndex, endIndex) + "</strong>" +
-                              clientName.substring(endIndex);
+                                  "<strong>" + clientName.substring(startIndex, endIndex) + "</strong>" +
+                                  clientName.substring(endIndex);
 
                 b.innerHTML += "<input type='hidden' value='" + clientName + "'>";
                 
@@ -484,7 +510,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     loadClientSpecificData(clientNameHidden.value); 
                     closeAllLists(); 
                 });
-                clientSuggestionsContainer.appendChild(b); // Append directly to the container
+                clientSuggestionsContainer.appendChild(b); 
                 matchFound = true;
             }
         });
@@ -496,15 +522,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     clientSearchInput.addEventListener("keydown", function(e) {
-        let x = clientSuggestionsContainer.getElementsByTagName("div"); // Get the current list items
+        let x = clientSuggestionsContainer.getElementsByTagName("div"); 
         if (x) {
-            if (e.keyCode == 40) { // Arrow DOWN
+            if (e.keyCode == 40) { 
                 currentFocus++;
                 addActive(x);
-            } else if (e.keyCode == 38) { // Arrow UP
+            } else if (e.keyCode == 38) { 
                 currentFocus--;
                 addActive(x);
-            } else if (e.keyCode == 13) { // ENTER
+            } else if (e.keyCode == 13) { 
                 e.preventDefault();
                 if (currentFocus > -1) {
                     if (x && x[currentFocus]) x[currentFocus].click();
@@ -700,6 +726,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     clientSearchInput.value = clientNameHidden.value; 
                     loadClientSpecificData(clientNameHidden.value);
                 } else {
+                    
+                    ccEmailsInput.value = defaultCcEmail; 
+                    
                     templateSelectionGroup.style.display = 'none';
                     predefinedTemplateFieldsContainer.style.display = 'none';
                     customTemplateField.style.display = 'none';
