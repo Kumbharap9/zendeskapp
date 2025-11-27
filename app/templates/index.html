@@ -284,14 +284,19 @@
 
                     <label for="custom_template_body">Custom Ticket Body:</label>
                     <textarea id="custom_template_body" name="custom_template_body" rows="15" 
-                            placeholder="Enter your full custom ticket body here."></textarea>
+                             placeholder="Enter your full custom ticket body here."></textarea>
                     
                     <!-- NEW: Button for grammar and spelling check -->
-                    <button type="button" id="checkGrammarSpellingBtn" style="margin-top: 10px;">Check Grammar & Spelling</button>
-                    <div id="grammarSpellingMessage" class="flash-message-modal" style="display: none; margin-top: 10px;"></div>
+                    <div class="grammar-button-container">
+                         <button type="button" id="checkGrammarSpellingBtn" class="grammar-check-button">Check Grammar & Spelling</button>
+                    </div>
+                   
+                    <div id="grammarSpellingMessage"></div>
                 </div>
 
-                <input type="submit" value="Preview Ticket" id="previewTicketBtn">
+                <div id="form-buttons" class="form-buttons">
+                    <input type="submit" value="Preview Ticket" id="previewTicketBtn">
+                </div>
             </form>
         {% else %}
             <p>Please <a href="{{ url_for('login') }}">log in</a> to create Zendesk tickets.</p>
