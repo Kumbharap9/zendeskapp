@@ -11,7 +11,7 @@ accesslog = "-"
 
 errorlog = "-"
 
-timeout = 60
+timeout = 90
 
 max_requests = 1000
 
